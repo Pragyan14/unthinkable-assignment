@@ -2,8 +2,8 @@
 FROM python:3.11-slim as builder
 WORKDIR /build
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc g++ && rm -rf /var/lib/apt/lists/*
-COPY requirements.txt .
-RUN pip install --no-cache-dir --user --no-warn-script-location -r requirements.txt
+COPY requirements-prod.txt .
+RUN pip install --no-cache-dir --user --no-warn-script-location -r requirements-prod.txt
 
 # Stage 2: Runtime
 FROM python:3.11-slim

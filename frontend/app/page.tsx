@@ -9,7 +9,7 @@ import Toast from './components/Toast'
 import { useSearch } from './hooks/useSearch'
 
 export default function Home() {
-  const [minSimilarity, setMinSimilarity] = useState(0.9)
+  const [minSimilarity, setMinSimilarity] = useState(0.7)
   const [topN, setTopN] = useState(5)
   const [toastMessage, setToastMessage] = useState('')
   const [toastType, setToastType] = useState<'success' | 'error'>('success')

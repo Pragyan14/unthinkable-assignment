@@ -29,4 +29,6 @@ ENV PYTHONUNBUFFERED=1
 EXPOSE 8080
 
 # Run the FastAPI app using Gunicorn + Uvicorn workers
-CMD gunicorn main:app --bind 0.0.0.0:$PORT --workers 2 --worker-class uvicorn.workers.UvicornWorker --timeout 300
+# CMD gunicorn main:app --bind 0.0.0.0:$PORT --workers 2 --worker-class uvicorn.workers.UvicornWorker --timeout 300
+CMD ["gunicorn", "main:app", "--bind", "0.0.0.0:8080", "--workers", "1", "--worker-class", "uvicorn.workers.UvicornWorker", "--timeout", "300"]
+

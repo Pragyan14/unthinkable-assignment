@@ -26,18 +26,36 @@ def get_model_and_processor():
             raise
     return _model, _processor
 
+# def load_image(image_data: bytes = None, image_url: str = None) -> Optional[Image.Image]:
+#     """Load image from bytes or URL"""
+#     try:
+#         if image_data:
+#             return Image.open(io.BytesIO(image_data)).convert("RGB")
+#         elif image_url:
+#             response = requests.get(image_url, timeout=10)
+#             response.raise_for_status()
+#             return Image.open(io.BytesIO(response.content)).convert("RGB")
+#     except Exception as e:
+#         logger.error(f"Failed to load image: {str(e)}")
+#     return None
+
 def load_image(image_data: bytes = None, image_url: str = None) -> Optional[Image.Image]:
     """Load image from bytes or URL"""
     try:
         if image_data:
-            return Image.open(io.BytesIO(image_data)).convert("RGB")
+            img = Image.open(io.BytesIO(image_data)).convert("RGB")
+            logger.info(f"Loaded image from file, size={img.size}")
+            return img
         elif image_url:
             response = requests.get(image_url, timeout=10)
             response.raise_for_status()
-            return Image.open(io.BytesIO(response.content)).convert("RGB")
+            img = Image.open(io.BytesIO(response.content)).convert("RGB")
+            logger.info(f"Loaded image from URL {image_url}, size={img.size}")
+            return img
     except Exception as e:
-        logger.error(f"Failed to load image: {str(e)}")
+        logger.error(f"Failed to load image. Data length={len(image_data) if image_data else 'N/A'}, URL={image_url}. Error: {str(e)}")
     return None
+
 
 def compute_embedding(image_data: bytes = None, image_url: str = None) -> Optional[List[float]]:
     """Compute CLIP embedding for an image"""

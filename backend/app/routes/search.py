@@ -49,7 +49,7 @@ async def search_similar_products(
         if embedding is None:
             raise HTTPException(
                 status_code=400,
-                detail="Failed to process image. Ensure it's a valid image format."
+                detail="Failed to process image. Ensure it's a valid image format. Check logs for details."
             )
         
         # Load products and find similar ones

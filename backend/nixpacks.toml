@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["python311", "libffi", "libgcc"]
+
+[phases.install]
+cmds = ["pip install --upgrade pip", "pip install -r requirements-prod.txt"]
+
+[phases.build]
+cmds = ["python app/data/generate_sample_data.py", "python app/data/precompute_embeddings.py"]
+
+[start]
+cmd = "python main.py"

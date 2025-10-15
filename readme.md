@@ -2,6 +2,8 @@
 
 A production-ready web application that helps users find visually similar products based on uploaded images using AI-powered visual embeddings (CLIP).
 
+LINK: https://unthinkable-assignment-five.vercel.app/
+
 ## ✨ Features
 
 - **Image Upload**: Drag & drop or click to upload images

@@ -2,27 +2,30 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies efficiently
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends libgomp1 && \
-    rm -rf /var/lib/apt/lists/*
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements
 COPY requirements.txt .
 
 # Install Python packages with no cache
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application
 COPY . .
 
-# Create data directory
-RUN mkdir -p app/data
+# Create non-root user
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
 
-# Railway provides PORT automatically
-ENV PORT=8000
+# Environment variables
+ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
 
-EXPOSE ${PORT}
+EXPOSE 8080
 
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT}
+# Run with gunicorn
+CMD gunicorn main:app --bind 0.0.0.0:$PORT --workers 2 --worker-class uvicorn.workers.UvicornWorker --timeout 300
